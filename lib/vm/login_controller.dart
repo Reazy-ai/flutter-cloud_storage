@@ -2,7 +2,6 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:private_gallery/helpers/loading/loading_overlay.dart';
 import 'package:private_gallery/providers/auth_provider.dart';
 import 'package:private_gallery/utilities/dialogs/logout_dialog.dart';
 import 'package:private_gallery/vm/login_state.dart';
@@ -19,13 +18,11 @@ class LoginController extends StateNotifier<LoginState> {
   void signInWithGoogle(BuildContext context) async {
     state = const LoginStateLoading();
     try {
-      LoadingScreen().show(context: context, text: 'Please wait');
       await ref.read(authRepositoryProvider).signInWithGoogle();
       state = const LoginStateSuccess();
     } catch (e) {
       state = LoginStateFailure(e.toString());
     }
-    LoadingScreen().hide();
   }
 
   void signInWithEmail({
@@ -56,7 +53,7 @@ class LoginController extends StateNotifier<LoginState> {
             password: password,
           );
 
-      state = const LoginStateSuccess();
+      state = const LoginStateNeedsVerification();
     } catch (e) {
       state = LoginStateFailure(e.toString());
     }
@@ -66,7 +63,7 @@ class LoginController extends StateNotifier<LoginState> {
     try {
       await ref.read(authRepositoryProvider).sendEmailVerification();
 
-      state = const LoginStateSuccess();
+      state = const LoginStateInitial();
     } catch (e) {
       state = LoginStateFailure(e.toString());
     }
@@ -74,25 +71,25 @@ class LoginController extends StateNotifier<LoginState> {
 
   void sendPasswordReset(String toEmail) async {
     try {
+      state = const LoginStateLoading();
       await ref
           .read(authRepositoryProvider)
           .sendPasswordReset(toEmail: toEmail);
 
-      state = const LoginStateSuccess();
+      state = const LoginStateInitial();
     } catch (e) {
       state = LoginStateFailure(e.toString());
     }
   }
 
   void logOut(BuildContext context) async {
-    state = const LoginStateLoading();
-    await showLogOutDialog(context).then((value) async {
-      value ? await ref.read(authRepositoryProvider).logOut() : null;
-      state = const LoginStateInitial();
-    });
-    // if (shouldLogOut) {
-    //   ;
-    //   state = const LoginStateInitial();
-    // }
+    final shouldLogout = await showLogOutDialog(context);
+    if (shouldLogout) {
+      state = const LoginStateLoading();
+      await ref.read(authRepositoryProvider).logOut();
+    } else {
+      return null;
+    }
+    state = const LoginStateInitial();
   }
 }

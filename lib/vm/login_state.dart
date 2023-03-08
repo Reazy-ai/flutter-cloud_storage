@@ -1,33 +1,38 @@
 import 'package:equatable/equatable.dart';
 
 class LoginState extends Equatable {
-  final bool isLoading;
-  const LoginState({required this.isLoading});
+  const LoginState();
   @override
-  List<Object?> get props => [isLoading];
+  List<Object?> get props => [];
 }
 
 class LoginStateInitial extends LoginState {
-  const LoginStateInitial() : super(isLoading: false);
+  const LoginStateInitial();
   @override
   List<Object?> get props => [];
 }
 
 class LoginStateLoading extends LoginState {
-  const LoginStateLoading() : super(isLoading: true);
+  const LoginStateLoading();
   @override
   List<Object?> get props => [];
 }
 
 class LoginStateSuccess extends LoginState {
-  const LoginStateSuccess() : super(isLoading: false);
+  const LoginStateSuccess();
+  @override
+  List<Object?> get props => [];
+}
+
+class LoginStateNeedsVerification extends LoginState {
+  const LoginStateNeedsVerification();
   @override
   List<Object?> get props => [];
 }
 
 class LoginStateFailure extends LoginState {
   final String errorCode;
-  const LoginStateFailure(this.errorCode) : super(isLoading: false);
+  const LoginStateFailure(this.errorCode);
   @override
   List<Object?> get props => [errorCode];
 }

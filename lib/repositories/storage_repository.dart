@@ -2,9 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:private_gallery/constants/enums/file_type.dart';
 import 'package:private_gallery/models/cloud_file.dart';
 
 class StorageRepository {
@@ -12,8 +10,6 @@ class StorageRepository {
   final storedImages = FirebaseFirestore.instance.collection('images');
   final storedVideos = FirebaseFirestore.instance.collection('videos');
   ImagePicker imagePicker = ImagePicker();
-  // final String imageName = DateTime.now().millisecondsSinceEpoch.toString();
-  // late String imageUrl;
 
   Future uploadImages({required String ownerUserId}) async {
     final selectedImages = await imagePicker.pickMultiImage();
@@ -31,7 +27,7 @@ class StorageRepository {
           fileName: imageName,
           ownerUserId: ownerUserId,
           fileUrl: imageUrl,
-          fileType: FileType.image.name,
+          fileType: 'image',
         ).toMap());
       }
     } catch (e) {
@@ -57,7 +53,7 @@ class StorageRepository {
           fileName: videoName,
           ownerUserId: ownerUserId,
           fileUrl: videoUrl,
-          fileType: FileType.video.name,
+          fileType: 'video',
         ).toMap());
       } catch (e) {
         rethrow;
@@ -65,14 +61,7 @@ class StorageRepository {
     } else {}
   }
 
-  // Future<List<CloudFile>> getImages({required String ownerUserId}) async {
-  //   try {
-  //     storedImages;
-  //   } on FirebaseException catch (e) {
-  //     debugPrint(e.toString());
-  //   }
-  // }
-
+// Stream of User images.
   Stream<List<CloudFile>> retrieveImages({required String ownerUserId}) {
     return storedImages
         .where('ownerUserId', isEqualTo: ownerUserId)
@@ -83,12 +72,15 @@ class StorageRepository {
         );
   }
 
-  Stream<CloudFile> retrieveVideos({required String ownerUserId}) {
+// Stream of User videos.
+  Stream<List<CloudFile>> retrieveVideos({required String ownerUserId}) {
     return storedVideos
         .where('ownerUserId', isEqualTo: ownerUserId)
         .snapshots()
         .map(
-          (videos) => CloudFile.fromMap(videos.docs as Map<String, dynamic>),
+          (event) => event.docs
+              .map((vids) => CloudFile.fromMap(vids as Map<String, dynamic>))
+              .toList(),
         );
   }
 }

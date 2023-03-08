@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:private_gallery/helpers/loading/loading_overlay_controller.dart';
+import 'package:private_gallery/utilities/loading/loading_overlay_controller.dart';
 
 class LoadingScreen {
   factory LoadingScreen() => _shared;

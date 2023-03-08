@@ -1,8 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:private_gallery/auth_checker.dart';
 import 'package:private_gallery/providers/auth_provider.dart';
 import 'package:private_gallery/vm/login_controller.dart';
 import 'package:private_gallery/vm/storage_controller.dart';
@@ -82,8 +79,6 @@ class _StorageScreenState extends ConsumerState<StorageScreen> {
                   );
                 },
                 error: (error, stackTrace) {
-                  debugPrintStack(
-                      stackTrace: stackTrace, label: error.toString());
                   return const Center(
                     child: Text('Error'),
                   );
@@ -95,6 +90,3 @@ class _StorageScreenState extends ConsumerState<StorageScreen> {
     );
   }
 }
-
-// The grid view
-

@@ -21,12 +21,14 @@ class StorageController extends StateNotifier<StorageState> {
 
   void uploadImages({required String ownerUserId}) async {
     try {
+      state = StorageState(isLoading: true);
       await ref
           .read(storageRepositoryProvider)
           .uploadImages(ownerUserId: ownerUserId);
     } catch (e) {
       rethrow;
     }
+    state = StorageState(isLoading: false);
   }
 
   void uploadVideo({required String ownerUserId}) async {
@@ -45,7 +47,7 @@ class StorageController extends StateNotifier<StorageState> {
         .retrieveImages(ownerUserId: ownerUserId);
   }
 
-  Stream<CloudFile> retrieveVideos({required String ownerUserId}) {
+  Stream<List<CloudFile>> retrieveVideos({required String ownerUserId}) {
     return ref
         .read(storageRepositoryProvider)
         .retrieveVideos(ownerUserId: ownerUserId);
