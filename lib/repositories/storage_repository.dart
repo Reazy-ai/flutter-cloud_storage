@@ -80,9 +80,8 @@ class StorageRepository {
         .where('ownerUserId', isEqualTo: ownerUserId)
         .snapshots()
         .map(
-          (event) => event.docs
-              .map((vids) => CloudFile.fromMap(vids as Map<String, dynamic>))
-              .toList(),
+          (event) =>
+              event.docs.map((vids) => CloudFile.fromMap(vids.data())).toList(),
         );
   }
 }

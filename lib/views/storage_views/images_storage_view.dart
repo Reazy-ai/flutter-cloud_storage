@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:private_gallery/providers/auth_repository_provider.dart';
 import 'package:private_gallery/providers/image_stream_provider.dart';
 import 'package:private_gallery/providers/storage_controller_provider.dart';
+import 'package:private_gallery/views/storage_views/full_image_screen.dart';
 
 class ImagesScreen extends ConsumerWidget {
   const ImagesScreen({super.key});
@@ -41,7 +42,18 @@ class ImagesScreen extends ConsumerWidget {
                             itemCount: images.length,
                             itemBuilder: (context, index) {
                               final img = images[index];
-                              return Image.network(img.fileUrl);
+                              return GestureDetector(
+                                onTap: () => Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => FullImageScreen(
+                                      image: img,
+                                    ),
+                                  ),
+                                  (route) => true,
+                                ),
+                                child: Image.network(img.fileUrl),
+                              );
                             },
                           ),
                         )
