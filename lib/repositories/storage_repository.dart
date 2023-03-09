@@ -28,6 +28,7 @@ class StorageRepository {
           ownerUserId: ownerUserId,
           fileUrl: imageUrl,
           fileType: 'image',
+          createdAt: DateTime.now(),
         ).toMap());
       }
     } catch (e) {
@@ -54,6 +55,7 @@ class StorageRepository {
           ownerUserId: ownerUserId,
           fileUrl: videoUrl,
           fileType: 'video',
+          createdAt: DateTime.now(),
         ).toMap());
       } catch (e) {
         rethrow;

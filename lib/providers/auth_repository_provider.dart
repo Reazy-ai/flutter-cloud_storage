@@ -8,7 +8,7 @@ final authRepositoryProvider = Provider<AuthRepository>(
   },
 );
 
-final authStateProvider = StreamProvider<User?>(
+final userStateProvider = StreamProvider<User?>(
   (ref) {
     return ref.read(authRepositoryProvider).authStateChange;
   },

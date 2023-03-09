@@ -5,12 +5,14 @@ class CloudFile {
   final String ownerUserId;
   final String fileUrl;
   final String fileType;
+  final DateTime createdAt;
 
   CloudFile({
     required this.fileName,
     required this.ownerUserId,
     required this.fileUrl,
     required this.fileType,
+    required this.createdAt,
   });
 
   Map<String, dynamic> toMap() {
@@ -19,6 +21,7 @@ class CloudFile {
       'ownerUserId': ownerUserId,
       'fileUrl': fileUrl,
       'fileType': fileType,
+      'createdAt': createdAt.millisecondsSinceEpoch,
     };
   }
 
@@ -28,6 +31,7 @@ class CloudFile {
       ownerUserId: map['ownerUserId'] ?? '',
       fileUrl: map['fileUrl'] ?? '',
       fileType: map['fileType'],
+      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt']),
     );
   }
 

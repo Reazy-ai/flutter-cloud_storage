@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:private_gallery/views/auth_views/signup_screen.dart';
 import 'package:private_gallery/vm/login_controller.dart';
 
@@ -87,19 +88,27 @@ class _LoginPageState extends ConsumerState<LoginScreen> {
                 height: 50,
               ),
               Center(
-                child: OutlinedButton.icon(
+                child: ElevatedButton.icon(
                   onPressed: () {
                     ref
                         .read(loginControllerProvider.notifier)
                         .signInWithGoogle(context);
                   },
-                  icon: const FlutterLogo(),
-                  label: const Text('Continue with Google'),
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
+                  icon: Image.asset(
+                    'assets/images/google.png',
+                    width: 35,
+                  ),
+                  label: const Text(
+                    'Continue with Google',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(
+                      double.infinity,
+                      50,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
                     ),
                   ),
                 ),

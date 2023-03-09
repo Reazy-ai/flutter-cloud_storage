@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:private_gallery/providers/auth_provider.dart';
+import 'package:private_gallery/views/storage_views/images_storage_view.dart';
+import 'package:private_gallery/views/storage_views/videos_storage_view.dart';
 import 'package:private_gallery/vm/login_controller.dart';
-import 'package:private_gallery/vm/storage_controller.dart';
 
-class StorageScreen extends ConsumerStatefulWidget {
+class StorageScreen extends ConsumerWidget {
   const StorageScreen({super.key});
 
   @override
-  ConsumerState<StorageScreen> createState() => _StorageScreenState();
-}
-
-class _StorageScreenState extends ConsumerState<StorageScreen> {
-  @override
-  Widget build(BuildContext context) {
-    final ownerUserId = ref.watch(currentUserIdProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
+        title: const Text('Cloud Storage'),
         actions: [
           PopupMenuButton(
             itemBuilder: (ctx) {
@@ -36,55 +31,33 @@ class _StorageScreenState extends ConsumerState<StorageScreen> {
         ],
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Center(
-            child: TextButton(
-              onPressed: () {
-                ref
-                    .read(storageControllerProvider.notifier)
-                    .uploadImages(ownerUserId: ownerUserId);
-              },
-              child: const Text('Pick image'),
-            ),
+          ListTile(
+            leading: const Icon(Icons.photo_library),
+            title: const Text('Images'),
+            trailing: const Icon(Icons.arrow_forward_ios),
+            style: ListTileStyle.drawer,
+            onTap: () => Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ImagesScreen(),
+                ),
+                (route) => true),
           ),
-          const SizedBox(
-            height: 20,
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.video_library),
+            title: const Text('Videos'),
+            trailing: const Icon(Icons.arrow_forward_ios),
+            style: ListTileStyle.drawer,
+            onTap: () => Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const VideosScreen(),
+                ),
+                (route) => true),
           ),
-          Center(
-            child: TextButton(
-              onPressed: () {
-                ref
-                    .read(storageControllerProvider.notifier)
-                    .uploadVideo(ownerUserId: ownerUserId);
-              },
-              child: const Text('Pick video'),
-            ),
-          ),
-          const SizedBox(height: 30),
-          ref.watch(imagesProvider(ownerUserId)).when(
-                data: (images) {
-                  return Expanded(
-                    child: GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        mainAxisSpacing: 10,
-                        crossAxisCount: 4,
-                      ),
-                      itemCount: images.length,
-                      itemBuilder: (context, index) {
-                        final img = images[index];
-                        return Image.network(img.fileUrl);
-                      },
-                    ),
-                  );
-                },
-                error: (error, stackTrace) {
-                  return const Center(
-                    child: Text('Error'),
-                  );
-                },
-                loading: () => const CircularProgressIndicator.adaptive(),
-              ),
         ],
       ),
     );

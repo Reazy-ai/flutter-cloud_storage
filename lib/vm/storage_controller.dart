@@ -1,23 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:private_gallery/models/cloud_file.dart';
-import 'package:private_gallery/providers/storage_provider.dart';
+import 'package:private_gallery/providers/storage_repository_provider.dart';
 import 'package:private_gallery/vm/storage_state.dart';
-
-final storageControllerProvider =
-    StateNotifierProvider<StorageController, StorageState>(
-  (ref) => StorageController(ref),
-);
-
-final imagesProvider =
-    StreamProvider.family<List<CloudFile>, String>((ref, ownerUserId) {
-  return ref
-      .watch(storageControllerProvider.notifier)
-      .retrieveImages(ownerUserId: ownerUserId);
-});
 
 class StorageController extends StateNotifier<StorageState> {
   final Ref ref;
-  StorageController(this.ref) : super(StorageState(isLoading: false));
+  StorageController(this.ref) : super(StorageState());
 
   void uploadImages({required String ownerUserId}) async {
     try {

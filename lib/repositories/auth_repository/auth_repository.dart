@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:private_gallery/services/auth/auth_exceptions.dart';
 
@@ -35,10 +36,11 @@ class AuthRepository {
     required String password,
   }) async {
     try {
-      await _auth.createUserWithEmailAndPassword(
+      final userCred = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+      await userCred.user?.sendEmailVerification();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         throw WeakPasswordAuthException();

@@ -2,7 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:private_gallery/providers/auth_provider.dart';
+import 'package:private_gallery/providers/auth_repository_provider.dart';
 import 'package:private_gallery/utilities/dialogs/logout_dialog.dart';
 import 'package:private_gallery/vm/login_state.dart';
 
