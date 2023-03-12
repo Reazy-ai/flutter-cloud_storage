@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:private_gallery/providers/auth_repository_provider.dart';
-import 'package:private_gallery/providers/storage_controller_provider.dart';
+import 'package:private_gallery/providers/user_files_provider.dart';
 import 'package:private_gallery/providers/video_thumbnail_stream_provider.dart';
 
 class VideosScreen extends ConsumerWidget {
@@ -16,9 +16,7 @@ class VideosScreen extends ConsumerWidget {
       ),
       floatingActionButton: ElevatedButton(
         onPressed: () {
-          ref
-              .read(storageControllerProvider.notifier)
-              .uploadVideo(ownerUserId: ownerUserId);
+          ref.read(userFilesControllerProvider.notifier).uploadedVideo();
         },
         style: ElevatedButton.styleFrom(
           shape: const CircleBorder(),

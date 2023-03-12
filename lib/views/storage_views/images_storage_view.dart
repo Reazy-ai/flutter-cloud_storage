@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:private_gallery/providers/auth_repository_provider.dart';
 import 'package:private_gallery/providers/image_stream_provider.dart';
-import 'package:private_gallery/providers/storage_controller_provider.dart';
+import 'package:private_gallery/providers/user_files_provider.dart';
 import 'package:private_gallery/views/storage_views/full_image_screen.dart';
 
 class ImagesScreen extends ConsumerWidget {
@@ -21,9 +21,7 @@ class ImagesScreen extends ConsumerWidget {
           fixedSize: const Size(30, 50),
         ),
         onPressed: () {
-          ref
-              .read(storageControllerProvider.notifier)
-              .uploadImages(ownerUserId: ownerUserId);
+          ref.read(userFilesControllerProvider.notifier).uploadPicture();
         },
         child: const Icon(Icons.add_a_photo_outlined),
       ),
