@@ -45,7 +45,18 @@ class ImagesScreen extends ConsumerWidget {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => FullImageScreen(
-                                      image: img,
+                                      images: images,
+                                      controller:
+                                          PageController(initialPage: index),
+                                      onTap: () {
+                                        ref
+                                            .read(userFilesControllerProvider
+                                                .notifier)
+                                            .deleteImage(
+                                              fileId: img.fileId,
+                                              fileName: img.fileName,
+                                            );
+                                      },
                                     ),
                                   ),
                                   (route) => true,

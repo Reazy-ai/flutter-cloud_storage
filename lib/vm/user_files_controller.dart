@@ -16,7 +16,7 @@ class UserFilesController extends StateNotifier<StorageState> {
       : _ref = ref,
         super(StorageState());
 
-  void uploadPicture() async {
+  Future uploadPicture() async {
     state = state.copyWith(isLoading: true);
     final selectedImages = await imagePicker.pickMultiImage();
     final userId = _ref.read(currentUserIdProvider);
@@ -35,7 +35,7 @@ class UserFilesController extends StateNotifier<StorageState> {
           fileName: imageName,
           ownerUserId: userId,
           fileUrl: imageUrl,
-          fileType: 'Image',
+          fileId: '',
           createdAt: DateTime.now(),
         );
         await _ref.read(userFilesRepositoryProvider).uploadImage(imageFile);
@@ -68,7 +68,7 @@ class UserFilesController extends StateNotifier<StorageState> {
           fileName: videoName,
           ownerUserId: userId,
           fileUrl: uploadedVideo,
-          fileType: 'Video',
+          fileId: 'Video',
           createdAt: DateTime.now(),
         );
         await _ref.read(userFilesRepositoryProvider).uploadVideo(videoFile);
@@ -89,5 +89,33 @@ class UserFilesController extends StateNotifier<StorageState> {
     return _ref
         .read(userFilesRepositoryProvider)
         .retrieveVideos(ownerUserId: ownerUserId);
+  }
+
+  void deleteImage({required String fileId, required String fileName}) async {
+    final userId = _ref.read(currentUserIdProvider);
+    state = state.copyWith(isLoading: true);
+
+    _ref
+        .read(storageRepositoryProvider)
+        .deleteImage(path: '$userId/images/$fileName');
+    _ref.read(userFilesRepositoryProvider).deleteImage(fileId: fileId);
+    state = state.copyWith(isLoading: false);
+  }
+
+  void deleteImages({required List<CloudFile>? images}) async {
+    final userId = _ref.read(currentUserIdProvider);
+    state = state.copyWith(isLoading: true);
+
+    if (images != null) {
+      for (var image in images) {
+        _ref
+            .read(storageRepositoryProvider)
+            .deleteImage(path: '$userId/images/${image.fileName}');
+        _ref
+            .read(userFilesRepositoryProvider)
+            .deleteImage(fileId: '$userId/images/${image.fileName}');
+      }
+    }
+    state = state.copyWith(isLoading: false);
   }
 }

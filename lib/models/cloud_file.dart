@@ -4,14 +4,14 @@ class CloudFile {
   final String fileName;
   final String ownerUserId;
   final String fileUrl;
-  final String fileType;
+  final String fileId;
   final DateTime createdAt;
 
   CloudFile({
     required this.fileName,
     required this.ownerUserId,
     required this.fileUrl,
-    required this.fileType,
+    required this.fileId,
     required this.createdAt,
   });
 
@@ -20,7 +20,7 @@ class CloudFile {
       'fileName': fileName,
       'ownerUserId': ownerUserId,
       'fileUrl': fileUrl,
-      'fileType': fileType,
+      'fileId': fileId,
       'createdAt': createdAt.millisecondsSinceEpoch,
     };
   }
@@ -30,7 +30,7 @@ class CloudFile {
       fileName: map['fileName'] ?? '',
       ownerUserId: map['ownerUserId'] ?? '',
       fileUrl: map['fileUrl'] ?? '',
-      fileType: map['fileType'],
+      fileId: map['fileId'],
       createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt']),
     );
   }
